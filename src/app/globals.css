@@ -1,0 +1,254 @@
+@import "tailwindcss";
+@import "quill/dist/quill.snow.css";
+@plugin "@tailwindcss/typography";
+
+:root {
+  /* Financial theme colors */
+  --color-bull-50: #f0fdf4;
+  --color-bull-100: #dcfce7;
+  --color-bull-200: #bbf7d0;
+  --color-bull-300: #86efac;
+  --color-bull-400: #4ade80;
+  --color-bull-500: #22c55e;
+  --color-bull-600: #16a34a;
+  --color-bull-700: #15803d;
+  --color-bull-800: #166534;
+  --color-bull-900: #14532d;
+
+  --color-bear-50: #fef2f2;
+  --color-bear-100: #fee2e2;
+  --color-bear-200: #fecaca;
+  --color-bear-300: #fca5a5;
+  --color-bear-400: #f87171;
+  --color-bear-500: #ef4444;
+  --color-bear-600: #dc2626;
+  --color-bear-700: #b91c1c;
+  --color-bear-800: #991b1b;
+  --color-bear-900: #7f1d1d;
+
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fef3c7;
+  --color-gold-200: #fde68a;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-gold-600: #d97706;
+  --color-gold-700: #b45309;
+  --color-gold-800: #92400e;
+  --color-gold-900: #78350f;
+
+  --color-financial-dark: #0f172a;
+  --color-financial-navy: #1e293b;
+  --color-financial-blue: #3b82f6;
+  --color-financial-purple: #8b5cf6;
+
+  /* Custom spacing */
+  --spacing-market-card: 1.5rem;
+  
+  /* Custom fonts */
+  --font-financial: "Inter", system-ui, sans-serif;
+  
+  /* Custom breakpoints */
+  --breakpoint-3xl: 1920px;
+  
+  /* Custom animations */
+  --animate-ticker: ticker 30s linear infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-market-flash: market-flash 1s ease-in-out;
+}
+
+@layer base {
+  * {
+    /* Use a fallback border color or define a custom property */
+    border-color: #e5e7eb; /* Tailwind gray-200 as fallback */
+  }
+  
+  body {
+    /* Use a fallback background and foreground color or define custom properties */
+    background-color: #fff; /* Tailwind default background */
+    color: #0f172a; /* Tailwind slate-900 as fallback */
+    font-family: var(--font-financial);
+  }
+}
+
+@layer components {
+  .financial-gradient {
+    background: linear-gradient(135deg, var(--color-financial-dark), var(--color-financial-navy), var(--color-financial-blue));
+  }
+  
+  .market-gradient {
+    background: linear-gradient(90deg, var(--color-financial-blue), var(--color-financial-purple), #4f46e5);
+  }
+  
+  .market-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border: 1px solid rgb(229 231 235);
+    transition: all 0.3s ease;
+  }
+  
+  .market-card:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    transform: scale(1.02);
+  }
+  
+  .price-up {
+    color: var(--color-bull-600);
+    background-color: var(--color-bull-50);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+  }
+  
+  .price-down {
+    color: var(--color-bear-600);
+    background-color: var(--color-bear-50);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+  }
+  
+  .market-ticker {
+    background-color: var(--color-financial-dark);
+    color: white;
+    padding: 0.5rem 0;
+    overflow: hidden;
+  }
+  
+  .ticker-content {
+    display: flex;
+    animation: var(--animate-ticker);
+    white-space: nowrap;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(16px);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-financial-blue), var(--color-financial-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Custom keyframes */
+@keyframes ticker {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes market-flash {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(34, 197, 94, 0.2); }
+  100% { background-color: transparent; }
+}
+
+
+:root {
+  /* Indian market inspired colors */
+  --color-saffron-50: #fff7ed;
+  --color-saffron-100: #ffedd5;
+  --color-saffron-200: #fed7aa;
+  --color-saffron-300: #fdba74;
+  --color-saffron-400: #fb923c;
+  --color-saffron-500: #f97316;
+  --color-saffron-600: #ea580c;
+  --color-saffron-700: #c2410c;
+  --color-saffron-800: #9a3412;
+  --color-saffron-900: #7c2d12;
+
+  /* Green for gains */
+  --color-bull-50: #f0fdf4;
+  --color-bull-100: #dcfce7;
+  --color-bull-200: #bbf7d0;
+  --color-bull-300: #86efac;
+  --color-bull-400: #4ade80;
+  --color-bull-500: #22c55e;
+  --color-bull-600: #16a34a;
+  --color-bull-700: #15803d;
+  --color-bull-800: #166534;
+  --color-bull-900: #14532d;
+
+  /* Red for losses */
+  --color-bear-50: #fef2f2;
+  --color-bear-100: #fee2e2;
+  --color-bear-200: #fecaca;
+  --color-bear-300: #fca5a5;
+  --color-bear-400: #f87171;
+  --color-bear-500: #ef4444;
+  --color-bear-600: #dc2626;
+  --color-bear-700: #b91c1c;
+  --color-bear-800: #991b1b;
+  --color-bear-900: #7f1d1d;
+
+  /* Financial theme */
+  --color-financial-dark: #0f172a;
+  --color-financial-navy: #1e293b;
+  --color-financial-blue: #3b82f6;
+  
+  /* Custom animations */
+  --animate-ticker: ticker 45s linear infinite;
+}
+
+@layer components {
+  .indian-gradient {
+    background: linear-gradient(135deg, var(--color-saffron-600), var(--color-saffron-500), #f59e0b);
+  }
+  
+  .market-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border: 1px solid rgb(229 231 235);
+    transition: all 0.3s ease;
+  }
+  
+  .market-card:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    transform: translateY(-2px);
+  }
+}
+.ticker-scroll {
+    animation: ticker-move 45s linear infinite;
+  }
+
+
+/* Ticker keyframes - this is crucial for the animation */
+@keyframes ticker-move {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

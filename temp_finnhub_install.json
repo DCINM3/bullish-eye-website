@@ -1,0 +1,14 @@
+{
+  "name": "bullish-eyes",
+  "version": "1.0.0",
+  "description": "Stock market and blog platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "finnhub": "^1.2.15"
+  }
+}
