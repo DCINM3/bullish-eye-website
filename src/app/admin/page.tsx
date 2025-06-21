@@ -72,33 +72,7 @@ export default function AdminDashboard() {
               </div>
             </Card>
           </Link>
-          {/* <Card className="p-6 opacity-50 cursor-not-allowed">
-            
-          </Card>          <Link href="/admin/contact">
-            <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="flex items-center">
-                <div className="p-2 bg-indigo-100 rounded-lg">
-                  <MessageSquare className="w-6 h-6 text-indigo-600" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Contact Forms</h3>
-                  <p className="text-sm text-gray-600">Manage inquiries</p>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Card className="p-6 opacity-50 cursor-not-allowed">
-            <div className="flex items-center">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Settings className="w-6 h-6 text-orange-600" />
-              </div>
-              <div className="ml-4">
-                <h3 className="text-lg font-semibold text-gray-900">Settings</h3>
-                <p className="text-sm text-gray-600">Coming soon</p>
-              </div>
-            </div>
-          </Card>*/}
+          
         </div>
 
         {/* Go to Blog Management section */}
