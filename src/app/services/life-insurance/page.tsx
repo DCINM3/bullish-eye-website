@@ -17,12 +17,12 @@ export default function LifeInsurancePage() {
     "Annual policy reviews for evolving needs",
   ];
 
-  return (
-    <ServicePageLayout 
+  return (    <ServicePageLayout 
       title="Insurance Planning"
       subtitle="Fortify Your Financial Foundation."
       icon={Shield}
       iconBgColor="from-indigo-500 to-indigo-700"
+      serviceKey="life-insurance"
     >
       <ContentSection title="🔐 Insurance Planning">
         <p>Before you grow, you must first protect. Insurance is your safety net against life's financial uncertainties — illness, accidents, loss of life, and more. We help you strike the perfect balance between adequate protection and affordability.</p>

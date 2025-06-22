@@ -35,6 +35,7 @@ export default function RetirementPlanPage() {
       icon={Calendar}
       iconBgColor="from-orange-500 to-orange-700"
       faqItems={faqItems}
+      serviceKey="retirement-plan"
     >
       <ContentSection title="🔵 Retirement Planning">
         <p>Retirement is not the end — it's your new beginning. We offer structured plans to help you accumulate and preserve wealth across three critical stages: accumulation, transition, and distribution.</p>

@@ -80,3 +80,14 @@ export interface BlogFormData {
   publish_date: string;
   content: string;
 }
+
+export interface Product {
+  _id: string;
+  title: string;
+  description: string;
+  service: string; // service page identifier
+  link?: string; // optional product link
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

@@ -34,6 +34,7 @@ export default function FixedIncomePage() {
       icon={DollarSign}
       iconBgColor="from-green-500 to-green-700"
       faqItems={faqItems}
+      serviceKey="fixed-income"
     >
       <ContentSection title="🟢 NCDs & Bonds (Fixed Income)">
         <p>Fixed income solutions like Non-Convertible Debentures (NCDs) and bonds offer a predictable income stream — without market swings. Ideal for income-seeking investors or portfolio stabilizers, these products ensure you earn while sleeping peacefully.</p>

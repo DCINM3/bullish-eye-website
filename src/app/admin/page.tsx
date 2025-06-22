@@ -2,7 +2,7 @@
 
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus, Settings, BarChart3, Mail, MessageSquare } from 'lucide-react';
+import { FileText, Plus, Settings, BarChart3, Mail, MessageSquare, Package } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboard() {
@@ -15,9 +15,7 @@ export default function AdminDashboard() {
           <p className="text-gray-600 mt-2">
             Welcome to the Bullish Eyes admin panel
           </p>
-        </div>
-
-        {/* Quick Actions */}
+        </div>        {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Link href="/admin/blogs">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
@@ -46,6 +44,35 @@ export default function AdminDashboard() {
               </div>
             </Card>
           </Link>
+
+          <Link href="/admin/products">
+            <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="flex items-center">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <Package className="w-6 h-6 text-orange-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Manage Products</h3>
+                  <p className="text-sm text-gray-600">View and edit products</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/admin/products/create">
+            <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="flex items-center">
+                <div className="p-2 bg-teal-100 rounded-lg">
+                  <Plus className="w-6 h-6 text-teal-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">New Product</h3>
+                  <p className="text-sm text-gray-600">Add a new product</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
           <Link href="/admin/newsletter">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <div className="flex items-center">
@@ -59,6 +86,7 @@ export default function AdminDashboard() {
               </div>
             </Card>
           </Link>
+
           <Link href="/admin/contact">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <div className="flex items-center">
@@ -72,16 +100,24 @@ export default function AdminDashboard() {
               </div>
             </Card>
           </Link>
-          
-        </div>
+        </div>        {/* Go to Management sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="p-6 text-center">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Blog Management</h3>
+            <p className="text-gray-600 mb-4">Manage your blog posts and articles</p>
+            <Link href="/admin/blogs">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white">Go to Blog Management</Button>
+            </Link>
+          </Card>
 
-        {/* Go to Blog Management section */}
-        <Card className="p-6 text-center">
-          <p className="text-gray-600 mb-4">Want to manage your blogs?</p>
-          <Link href="/admin/blogs">
-            <Button>Go to Blog Management</Button>
-          </Link>
-        </Card>
+          <Card className="p-6 text-center">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Product Management</h3>
+            <p className="text-gray-600 mb-4">Manage products for your service pages</p>
+            <Link href="/admin/products">
+              <Button className="bg-orange-600 hover:bg-orange-700 text-white">Go to Product Management</Button>
+            </Link>
+          </Card>
+        </div>
       </div>
     </div>
   );

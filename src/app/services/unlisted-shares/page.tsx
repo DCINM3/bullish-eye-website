@@ -34,6 +34,7 @@ export default function UnlistedSharesPage() {
       icon={Layers}
       iconBgColor="from-purple-500 to-purple-700"
       faqItems={faqItems}
+      serviceKey="unlisted-shares"
     >
       <ContentSection title="🟣 Unlisted Shares">
         <p>Our exclusive unlisted equity platform brings you investment opportunities in high-potential private companies — including startups and mature pre-IPO players. These are often closed to retail and offer significant alpha potential.</p>

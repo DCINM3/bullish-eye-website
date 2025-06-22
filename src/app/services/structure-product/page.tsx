@@ -34,6 +34,7 @@ export default function StructureProductPage() {
       icon={Briefcase}
       iconBgColor="from-yellow-500 to-yellow-700"
       faqItems={faqItems}
+      serviceKey="structure-product"
     >
       <ContentSection title="🧱 Structured Products">
         <p>Structured products are sophisticated, tailor-made investment vehicles designed to meet specific financial objectives. They often combine features of debt and equity to offer customized risk-return profiles that are otherwise unavailable in the market.</p>
