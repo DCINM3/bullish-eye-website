@@ -129,13 +129,13 @@ export default function AdminSidebar() {
           label="Contact Data"
         />
 
-        {/* Settings */}
+        {/* Settings
         <SidebarLink
           href="/secure-admin/settings"
           icon={<Settings className="w-5 h-5" />}
           active={pathname === '/secure-admin/settings'}
           label="Settings"
-        />
+        /> */}
       </nav>
     </aside>
   );

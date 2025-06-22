@@ -57,7 +57,7 @@ export default function CreateProductPage() {
         throw new Error('Failed to create product');
       }
 
-      router.push('/admin/products');
+      router.push('/secure-admin/products');
     } catch (error) {
       alert('Error creating product: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
@@ -68,7 +68,7 @@ export default function CreateProductPage() {
   return (
     <div className="p-6">
       <div className="flex items-center mb-6">
-        <Link href="/admin/products">
+        <Link href="/secure-admin/products">
           <Button variant="outline" size="sm" className="mr-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
@@ -147,10 +147,10 @@ export default function CreateProductPage() {
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700">
+            <Button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white">
               {loading ? 'Creating...' : 'Create Product'}
             </Button>
-            <Link href="/admin/products">
+            <Link href="/secure-admin/products">
               <Button type="button" variant="outline">
                 Cancel
               </Button>

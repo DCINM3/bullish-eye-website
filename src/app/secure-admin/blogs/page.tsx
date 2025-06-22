@@ -135,7 +135,7 @@ export default function AdminBlogsPage() {
                 Manage your blog posts - create, edit, and delete articles
               </p>
             </div>
-            <Link href="/admin/blogs/create">
+            <Link href="/secure-admin/blogs/create">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
                 <Plus className="w-4 h-4 mr-2" />
                 Create New Blog
@@ -228,7 +228,7 @@ export default function AdminBlogsPage() {
               {searchTerm ? 'Try adjusting your search terms' : 'Get started by creating your first blog post'}
             </p>
             {!searchTerm && (
-              <Link href="/admin/blogs/create">
+              <Link href="/secure-admin/blogs/create">
                 <Button className="bg-blue-600 hover:bg-blue-700">
                   <Plus className="w-4 h-4 mr-2" />
                   Create First Blog
@@ -282,7 +282,7 @@ export default function AdminBlogsPage() {
                     View
                     </Button>
                   </Link>
-                  <Link href={`/admin/blogs/edit/${blog._id}`}>
+                  <Link href={`/secure-admin/blogs/edit/${blog._id}`}>
                     <Button variant="outline" size="sm">
                     <Edit3 className="w-4 h-4 mr-2" />
                     Edit

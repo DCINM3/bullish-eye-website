@@ -17,7 +17,7 @@ export default function AdminDashboard() {
           </p>
         </div>        {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Link href="/admin/blogs">
+          <Link href="/secure-admin/blogs">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <div className="flex items-center">
                 <div className="p-2 bg-blue-100 rounded-lg">
@@ -31,7 +31,7 @@ export default function AdminDashboard() {
             </Card>
           </Link>
 
-          <Link href="/admin/blogs/create">
+          <Link href="/secure-admin/blogs/create">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <div className="flex items-center">
                 <div className="p-2 bg-green-100 rounded-lg">
@@ -45,7 +45,7 @@ export default function AdminDashboard() {
             </Card>
           </Link>
 
-          <Link href="/admin/products">
+          <Link href="/secure-admin/products">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <div className="flex items-center">
                 <div className="p-2 bg-orange-100 rounded-lg">
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
             </Card>
           </Link>
 
-          <Link href="/admin/products/create">
+          <Link href="/secure-admin/products/create">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <div className="flex items-center">
                 <div className="p-2 bg-teal-100 rounded-lg">
@@ -73,7 +73,7 @@ export default function AdminDashboard() {
             </Card>
           </Link>
 
-          <Link href="/admin/newsletter">
+          <Link href="/secure-admin/newsletter">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <div className="flex items-center">
                 <div className="p-2 bg-purple-100 rounded-lg">
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
             </Card>
           </Link>
 
-          <Link href="/admin/contact">
+          <Link href="/secure-admin/contact">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <div className="flex items-center">
                 <div className="p-2 bg-yellow-100 rounded-lg">
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
           <Card className="p-6 text-center">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Blog Management</h3>
             <p className="text-gray-600 mb-4">Manage your blog posts and articles</p>
-            <Link href="/admin/blogs">
+            <Link href="/secure-admin/blogs">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">Go to Blog Management</Button>
             </Link>
           </Card>
@@ -113,7 +113,7 @@ export default function AdminDashboard() {
           <Card className="p-6 text-center">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Product Management</h3>
             <p className="text-gray-600 mb-4">Manage products for your service pages</p>
-            <Link href="/admin/products">
+            <Link href="/secure-admin/products">
               <Button className="bg-orange-600 hover:bg-orange-700 text-white">Go to Product Management</Button>
             </Link>
           </Card>

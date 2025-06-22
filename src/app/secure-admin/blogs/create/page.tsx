@@ -89,7 +89,7 @@ export default function AdminBlogCreate() {
   const handlePreview = () => {
     // Store current form data in localStorage for preview
     localStorage.setItem('blog-preview', JSON.stringify(formData));
-    window.open('/admin/blogs/preview', '_blank');
+    window.open('/secure-admin/blogs/preview', '_blank');
   };
   return (
     <div className="py-8">
@@ -97,7 +97,7 @@ export default function AdminBlogCreate() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center space-x-4 mb-4">
-            <Link href="/admin/blogs">
+            <Link href="/secure-admin/blogs">
               <Button variant="outline" size="sm">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Blogs
