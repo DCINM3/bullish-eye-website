@@ -45,16 +45,16 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
       console.log('Auth check failed, redirecting to login');
       setIsAuthenticated(false);
       setIsLoading(false);
-      if (pathname !== '/admin/login') {
-        router.push('/admin/login');
+      if (pathname !== '/secure-admin/login') {
+        router.push('/secure-admin/login');
       }
     } catch (error) {
       console.error('Auth check error:', error);
       setIsAuthenticated(false);
       setIsLoading(false);
-      
-      if (pathname !== '/admin/login') {
-        router.push('/admin/login');
+
+      if (pathname !== '/secure-admin/login') {
+        router.push('/secure-admin/login');
       }
     }
   };
@@ -68,7 +68,7 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
       localStorage.removeItem('admin-session');
       setIsAuthenticated(false);
       toast.success('Logged out successfully');
-      router.push('/admin/login');
+      router.push('/secure-admin/login');
     } catch (error) {
       console.error('Logout error:', error);
       toast.error('Logout failed');
@@ -90,7 +90,7 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
   // If not authenticated, only show children on the login page.
   // On other pages, the redirection is in progress, so show a loader.
   if (!isAuthenticated) {
-    if (pathname === '/admin/login') {
+    if (pathname === '/secure-admin/login') {
       return <>{children}</>;
     }
     return (
