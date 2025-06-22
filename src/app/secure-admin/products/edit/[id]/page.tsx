@@ -13,7 +13,6 @@ import { Product } from '@/types/index';
 
 const serviceOptions = [
   { value: 'mutual-funds', label: 'Mutual Funds' },
-  { value: 'life-insurance', label: 'Life Insurance' },
   { value: 'ipo-investing', label: 'IPO Investing' },
   { value: 'fixed-income', label: 'Fixed Income' },
   { value: 'retirement-plan', label: 'Retirement Plan' },

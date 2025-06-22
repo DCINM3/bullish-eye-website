@@ -10,7 +10,6 @@ import { Product } from '@/types/index';
 
 const serviceNames: { [key: string]: string } = {
   'mutual-funds': 'Mutual Fund',
-  'life-insurance': 'Life Insurance',
   'ipo-investing': 'IPO Investing',
   'fixed-income': 'Fixed Income',
   'retirement-plan': 'Retirement Planning',
