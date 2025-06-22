@@ -44,8 +44,8 @@ export default function AdminLogin() {
         }));
         
         toast.success('Login successful!');
-        console.log('Redirecting to /admin');
-        router.push('/admin');
+        console.log('Redirecting to /secure-admin');
+        router.push('/secure-admin');
       } else {
         console.log('Login failed:', data.message);
         toast.error(data.message || 'Invalid credentials');
