@@ -258,7 +258,7 @@ function AdminManagement() {
 
       {/* Edit Admin Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent>
+        <DialogContent className='bg-white'>
           <DialogHeader>
             <DialogTitle>Edit Admin</DialogTitle>
           </DialogHeader>

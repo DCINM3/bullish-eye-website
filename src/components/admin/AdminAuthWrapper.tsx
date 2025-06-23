@@ -26,62 +26,76 @@ export default function AdminAuthWrapper({ children, requiredPermission }: Admin
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    checkAuthentication();
-  }, []);
-
-  const checkAuthentication = async () => {
-    try {
-      console.log('Checking authentication...');
-      const response = await fetch('/api/admin/auth', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
-      });
-      
-      console.log('Auth check response status:', response.status);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Auth check successful:', data);
-        setIsAuthenticated(true);
-        setAdminData(data.admin);
+    const checkAuthentication = async () => {
+      try {
+        console.log('Checking authentication...');
+        const response = await fetch('/api/admin/auth', {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        });
         
-        // Check permission if required
-        if (requiredPermission && !hasPermission(data.admin.role, requiredPermission)) {
-          console.log('Permission denied:', requiredPermission);
-          toast.error('You do not have permission to access this page');
-          router.push('/secure-admin');
-          return;
+        console.log('Auth check response status:', response.status);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Auth check successful:', data);
+          
+          if (!data.authenticated || !data.admin) {
+            console.log('Not authenticated, redirecting to login');
+            setIsAuthenticated(false);
+            setAdminData(null);
+            if (pathname !== '/secure-admin/login') {
+              router.replace('/secure-admin/login');
+            }
+            return;
+          }
+          
+          setIsAuthenticated(true);
+          setAdminData(data.admin);
+          
+          // Check permission if required
+          if (requiredPermission && !hasPermission(data.admin.role, requiredPermission)) {
+            console.log('Permission denied:', requiredPermission);
+            toast.error('You do not have permission to access this page');
+            router.replace('/secure-admin');
+            return;
+          }
+          
+          // If on login page and authenticated, redirect to dashboard
+          if (pathname === '/secure-admin/login') {
+            router.replace('/secure-admin');
+            return;
+          }
+        } else {
+          // If not authenticated, redirect to login
+          console.log('Auth check failed, redirecting to login');
+          setIsAuthenticated(false);
+          setAdminData(null);
+          if (pathname !== '/secure-admin/login') {
+            router.replace('/secure-admin/login');
+          }
         }
-        
+      } catch (error) {
+        console.error('Auth check error:', error);
+        setIsAuthenticated(false);
+        setAdminData(null);
+        if (pathname !== '/secure-admin/login') {
+          router.replace('/secure-admin/login');
+        }
+      } finally {
         setIsLoading(false);
-        return;
       }
-      
-      // If not authenticated, redirect to login
-      console.log('Auth check failed, redirecting to login');
-      setIsAuthenticated(false);
-      setAdminData(null);
-      setIsLoading(false);
-      if (pathname !== '/secure-admin/login') {
-        router.push('/secure-admin/login');
-      }
-    } catch (error) {
-      console.error('Auth check error:', error);
-      setIsAuthenticated(false);
-      setAdminData(null);
-      setIsLoading(false);
+    };
 
-      if (pathname !== '/secure-admin/login') {
-        router.push('/secure-admin/login');
-      }
-    }
-  };
+    checkAuthentication();
+  }, [pathname, requiredPermission, router]);
 
   const handleLogout = async () => {
     try {
+      setIsLoading(true);
       console.log('Logging out...');
       await fetch('/api/admin/auth', { 
         method: 'DELETE',
@@ -90,20 +104,22 @@ export default function AdminAuthWrapper({ children, requiredPermission }: Admin
       setIsAuthenticated(false);
       setAdminData(null);
       toast.success('Logged out successfully');
-      router.push('/secure-admin/login');
+      router.replace('/secure-admin/login');
     } catch (error) {
       console.error('Logout error:', error);
       toast.error('Logout failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Show loading state
-  if (isLoading) {
+  if (isLoading || isAuthenticated === null) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Verifying authentication...</p>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     );
@@ -114,14 +130,7 @@ export default function AdminAuthWrapper({ children, requiredPermission }: Admin
     if (pathname === '/secure-admin/login') {
       return <>{children}</>;
     }
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Redirecting to login...</p>
-        </div>
-      </div>
-    );
+    return null; // Don't show anything while redirecting
   }
 
   // Show admin content with header
@@ -147,6 +156,7 @@ export default function AdminAuthWrapper({ children, requiredPermission }: Admin
                 variant="outline"
                 size="sm"
                 className="flex items-center space-x-2"
+                disabled={isLoading}
               >
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>

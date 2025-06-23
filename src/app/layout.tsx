@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ErrorBoundary>
+        
           <MarketTicker />
           <Navbar />
           <main className="min-h-screen">
@@ -42,7 +42,7 @@ export default function RootLayout({
               },
             }}
           />
-        </ErrorBoundary>
+      
       </body>
     </html>
   );

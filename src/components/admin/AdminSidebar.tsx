@@ -22,7 +22,7 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const [blogOpen, setBlogOpen] = useState(pathname.startsWith('/secure-admin/blogs'));
   const [productsOpen, setProductsOpen] = useState(pathname.startsWith('/secure-admin/products'));
-  const [adminRole, setAdminRole] = useState<AdminRole | null>(null);
+  const [adminRole, setAdminRole] = useState<AdminRole | undefined>(undefined);
 
   useEffect(() => {
     // Fetch admin data on mount
@@ -33,7 +33,9 @@ export default function AdminSidebar() {
         });
         if (response.ok) {
           const data = await response.json();
-          setAdminRole(data.admin.role);
+          if (data.admin?.role) {
+            setAdminRole(data.admin.role);
+          }
         }
       } catch (error) {
         console.error('Error fetching admin data:', error);
