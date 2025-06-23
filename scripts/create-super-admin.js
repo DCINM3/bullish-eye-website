@@ -2,7 +2,7 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://ashish375:Ashish1235@mystorage.qtsriei.mongodb.net/bullisheyes?retryWrites=true&w=majority&appName=mystorage';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://<username>:<password>@mystorage.qtsriei.mongodb.net/bullisheyes?retryWrites=true&w=majority&appName=mystorage';
 
 async function createSuperAdmin() {
   const client = new MongoClient(MONGODB_URI);
