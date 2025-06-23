@@ -78,8 +78,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // Check if admin is authenticated
-    const authResult = await verifyAdminAuth(request);
+    // Check if admin is authenticated with contact management permission
+    const authResult = await verifyAdminAuth(request, 'contact_management');
     if (!authResult.isValid) {
       return NextResponse.json(
         { success: false, message: `Unauthorized - ${authResult.error}` },

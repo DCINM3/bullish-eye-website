@@ -5,27 +5,36 @@ import { useRouter, usePathname } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { ShieldCheck, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AdminRole, hasPermission, Permission } from '@/types/admin';
 
 interface AdminAuthWrapperProps {
   children: React.ReactNode;
+  requiredPermission?: Permission;
 }
 
-export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
+interface AdminData {
+  email: string;
+  name: string;
+  role: AdminRole;
+}
+
+export default function AdminAuthWrapper({ children, requiredPermission }: AdminAuthWrapperProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [adminData, setAdminData] = useState<AdminData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     checkAuthentication();
   }, []);
+
   const checkAuthentication = async () => {
     try {
       console.log('Checking authentication...');
-      // Only check with server-side cookie (no localStorage)
       const response = await fetch('/api/admin/auth', {
         method: 'GET',
-        credentials: 'include', // Ensure cookies are included
+        credentials: 'include',
         headers: {
           'Cache-Control': 'no-cache',
         },
@@ -37,6 +46,16 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
         const data = await response.json();
         console.log('Auth check successful:', data);
         setIsAuthenticated(true);
+        setAdminData(data.admin);
+        
+        // Check permission if required
+        if (requiredPermission && !hasPermission(data.admin.role, requiredPermission)) {
+          console.log('Permission denied:', requiredPermission);
+          toast.error('You do not have permission to access this page');
+          router.push('/secure-admin');
+          return;
+        }
+        
         setIsLoading(false);
         return;
       }
@@ -44,6 +63,7 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
       // If not authenticated, redirect to login
       console.log('Auth check failed, redirecting to login');
       setIsAuthenticated(false);
+      setAdminData(null);
       setIsLoading(false);
       if (pathname !== '/secure-admin/login') {
         router.push('/secure-admin/login');
@@ -51,6 +71,7 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
     } catch (error) {
       console.error('Auth check error:', error);
       setIsAuthenticated(false);
+      setAdminData(null);
       setIsLoading(false);
 
       if (pathname !== '/secure-admin/login') {
@@ -58,6 +79,7 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
       }
     }
   };
+
   const handleLogout = async () => {
     try {
       console.log('Logging out...');
@@ -65,8 +87,8 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
         method: 'DELETE',
         credentials: 'include'
       });
-      localStorage.removeItem('admin-session');
       setIsAuthenticated(false);
+      setAdminData(null);
       toast.success('Logged out successfully');
       router.push('/secure-admin/login');
     } catch (error) {
@@ -87,8 +109,7 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
     );
   }
 
-  // If not authenticated, only show children on the login page.
-  // On other pages, the redirection is in progress, so show a loader.
+  // If not authenticated, only show children on the login page
   if (!isAuthenticated) {
     if (pathname === '/secure-admin/login') {
       return <>{children}</>;
@@ -119,7 +140,7 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
             
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">
-                Welcome, Admin
+                Welcome, {adminData?.name} ({adminData?.role.replace('_', ' ')})
               </span>
               <Button
                 onClick={handleLogout}
