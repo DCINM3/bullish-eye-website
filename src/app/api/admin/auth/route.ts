@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import * as bcrypt from 'bcryptjs';
+import { connectToDatabase } from '@/lib/newsletter';
+import { Admin, AdminLoginResponse } from '@/types/admin';
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,45 +14,50 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Email and password are required' }, { status: 400 });
     }
 
-    // Get admin credentials from environment variables
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
+    // Connect to MongoDB
+    const db = await connectToDatabase();
+    const adminsCollection = db.collection<Admin>('admins');
 
-    console.log('ADMIN_EMAIL:', adminEmail);
-    console.log('ADMIN_PASSWORD set:', !!adminPassword);
-
-    if (!adminEmail || !adminPassword) {
-      console.error('Admin credentials not configured in environment variables');
-      return NextResponse.json({ message: 'Server configuration error' }, { status: 500 });
-    }
-
-    // Verify credentials
-    if (email === adminEmail && password === adminPassword) {
-      // Create session token (you could use JWT here for more security)
-      const sessionToken = Buffer.from(`${email}:${Date.now()}`).toString('base64');
-      
-      console.log('Login successful, setting cookie with token:', sessionToken);
-      
-      const response = NextResponse.json({ 
-        message: 'Login successful',
-        authenticated: true 
-      });
-
-      // Set HTTP-only cookie for server-side verification
-      response.cookies.set('admin-session', sessionToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
-        maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
-        path: '/', // Ensure cookie is available for all paths
-      });
-
-      console.log('Cookie set successfully');
-      return response;
-    } else {
-      console.log('Invalid credentials provided');
+    // Find admin by email
+    const admin = await adminsCollection.findOne({ email });
+    if (!admin) {
+      console.log('Admin not found');
       return NextResponse.json({ message: 'Invalid email or password' }, { status: 401 });
     }
+
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, admin.password);
+    if (!isValidPassword) {
+      console.log('Invalid password');
+      return NextResponse.json({ message: 'Invalid email or password' }, { status: 401 });
+    }
+
+    // Create session token with admin role
+    const sessionToken = Buffer.from(`${email}:${admin.role}:${Date.now()}`).toString('base64');
+    
+    console.log('Login successful, setting cookie with token:', sessionToken);
+    
+    const response = NextResponse.json<AdminLoginResponse>({ 
+      success: true,
+      message: 'Login successful',
+      admin: {
+        email: admin.email,
+        name: admin.name,
+        role: admin.role
+      }
+    });
+
+    // Set HTTP-only cookie for server-side verification
+    response.cookies.set('admin-session', sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
+      path: '/',
+    });
+
+    console.log('Cookie set successfully');
+    return response;
   } catch (error) {
     console.error('Admin auth error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -61,8 +69,6 @@ export async function GET(request: NextRequest) {
     const sessionCookie = request.cookies.get('admin-session');
     console.log('GET /api/admin/auth - Session check');
     console.log('Admin session cookie:', sessionCookie?.value || 'undefined');
-    console.log('All cookies:', request.cookies.getAll().map(c => `${c.name}=${c.value}`));
-    console.log('ADMIN_EMAIL env var:', process.env.ADMIN_EMAIL);
     
     if (!sessionCookie?.value) {
       console.log('No session cookie found');
@@ -74,14 +80,9 @@ export async function GET(request: NextRequest) {
       const decoded = Buffer.from(sessionCookie.value, 'base64').toString();
       console.log('Decoded session:', decoded);
       
-      const [email, timestamp] = decoded.split(':');
+      const [email, role, timestamp] = decoded.split(':');
       const sessionTime = parseInt(timestamp);
       const now = Date.now();
-
-      console.log('Session email:', email);
-      console.log('Session timestamp:', sessionTime);
-      console.log('Current time:', now);
-      console.log('Time difference (hours):', (now - sessionTime) / (60 * 60 * 1000));
 
       // Check if session is valid (within 7 days)
       const maxAge = 60 * 60 * 24 * 7 * 1000; // 7 days in milliseconds
@@ -90,13 +91,31 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ authenticated: false, message: 'Session expired' }, { status: 401 });
       }
 
-      if (email === process.env.ADMIN_EMAIL) {
-        console.log('Session valid for admin user');
-        return NextResponse.json({ authenticated: true, email });
-      } else {
-        console.log('Session email does not match admin email');
+      // Connect to MongoDB and verify admin still exists
+      const db = await connectToDatabase();
+      const adminsCollection = db.collection<Admin>('admins');
+      const admin = await adminsCollection.findOne({ email });
+
+      if (!admin) {
+        console.log('Admin not found in database');
         return NextResponse.json({ authenticated: false, message: 'Invalid session' }, { status: 401 });
       }
+
+      // Verify role matches
+      if (admin.role !== role) {
+        console.log('Role mismatch in session');
+        return NextResponse.json({ authenticated: false, message: 'Invalid session' }, { status: 401 });
+      }
+
+      console.log('Session valid for admin:', email, 'with role:', role);
+      return NextResponse.json({ 
+        authenticated: true, 
+        admin: {
+          email: admin.email,
+          name: admin.name,
+          role: admin.role
+        }
+      });
     } catch (decodeError) {
       console.error('Session decode error:', decodeError);
       return NextResponse.json({ authenticated: false, message: 'Invalid session token' }, { status: 401 });

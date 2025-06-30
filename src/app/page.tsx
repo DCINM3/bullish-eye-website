@@ -1,27 +1,21 @@
-import HeroSection from '@/components/sections/HeroSection';
-import MarketStats from '@/components/market/MarketStats';
-import ServicesSection from '@/components/sections/ServicesSection';
-import MissionVisionSection from '@/components/sections/MissionVisionSection';
-import TestimonialsSection from '@/components/sections/TestimonialsSection';
-import BlogSection from '@/components/sections/BlogSection';
+import { Suspense } from 'react';
 import Link from 'next/link';
+import { Footer } from '@/components/layout/Footer';
+import { Navbar } from '@/components/layout/Navbar';
+import BlogSection from '@/components/sections/BlogSection';
+import FaqSection from '@/components/sections/FaqSection';
+import HeroSection from '@/components/sections/HeroSection';
+import MissionVisionSection from '@/components/sections/MissionVisionSection';
+import ServicesSection from '@/components/sections/ServicesSection';
+import TestimonialsSection from '@/components/sections/TestimonialsSection';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Home() {
   return (
     <main>
       <HeroSection />
       <BlogSection />
-      {/* Market Stats */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">Live Market Data</h2>
-            <p className="text-gray-600">Real-time updates from Indian stock markets</p>
-          </div>
-          <MarketStats />
-        </div>
-      </section>
-
+      
       <ServicesSection />
       <MissionVisionSection />
       <TestimonialsSection />

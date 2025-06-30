@@ -90,12 +90,12 @@ export default function AdminBlogEdit() {
         setOriginalSlug(blog.slug);
       } else {
         toast.error('Blog not found');
-        router.push('/admin/blogs');
+        router.push('/secure-admin/blogs');
       }
     } catch (error) {
       console.error('Error fetching blog:', error);
       toast.error('Error loading blog');
-      router.push('/admin/blogs');
+      router.push('/secure-admin/blogs');
     } finally {
       setIsLoading(false);
     }
@@ -128,7 +128,7 @@ export default function AdminBlogEdit() {
 
       if (response.ok) {
         toast.success('Blog updated successfully!');
-        router.push('/admin/blogs');
+        router.push('/secure-admin/blogs');
       } else {
         toast.error(data.message || 'Failed to update blog');
       }
@@ -146,7 +146,7 @@ export default function AdminBlogEdit() {
       ...formData,
       slug: originalSlug
     }));
-    window.open('/admin/blogs/preview', '_blank');
+    window.open('/secure-admin/blogs/preview', '_blank');
   };
   if (isLoading) {
     return (
@@ -164,7 +164,7 @@ export default function AdminBlogEdit() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center space-x-4 mb-4">
-            <Link href="/admin/blogs">
+            <Link href="/secure-admin/blogs">
               <Button variant="outline" size="sm">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Blogs

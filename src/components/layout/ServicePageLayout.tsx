@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import ActiveProducts from '@/components/services/ActiveProducts';
 
 interface ServicePageLayoutProps {
   title: string;
@@ -17,9 +18,10 @@ interface ServicePageLayoutProps {
   iconBgColor: string;
   children: React.ReactNode;
   faqItems?: { q: string; a: string }[];
+  serviceKey?: string; // Add serviceKey prop for product filtering
 }
 
-const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ title, subtitle, icon: Icon, iconBgColor, children, faqItems }) => {
+const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ title, subtitle, icon: Icon, iconBgColor, children, faqItems, serviceKey }) => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <section className={`relative bg-slate-900 text-white py-24`}>
@@ -33,10 +35,10 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ title, subtitle, 
         </div>
       </section>
 
-      <section className="py-16 -mt-20 relative z-10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 -mt-20 relative z-10">        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="p-8 md:p-12 shadow-xl border-0 bg-white">
             {children}
+            {serviceKey && <ActiveProducts service={serviceKey} />}
             {faqItems && faqItems.length > 0 && (
               <div className="mt-12 pt-8 border-t">
                 <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Frequently Asked Questions</h2>

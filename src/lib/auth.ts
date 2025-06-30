@@ -1,6 +1,8 @@
 import { NextRequest } from 'next/server';
+import { connectToDatabase } from './newsletter';
+import { Admin, Permission, hasPermission } from '@/types/admin';
 
-export async function verifyAdminAuth(request: NextRequest): Promise<{ isValid: boolean; error?: string }> {
+export async function verifyAdminAuth(request: NextRequest, requiredPermission?: Permission): Promise<{ isValid: boolean; error?: string }> {
   try {
     const sessionCookie = request.cookies.get('admin-session');
     
@@ -8,10 +10,10 @@ export async function verifyAdminAuth(request: NextRequest): Promise<{ isValid: 
       return { isValid: false, error: 'No session cookie' };
     }
 
-    // Verify session token (same logic as auth route)
+    // Verify session token
     try {
       const decoded = Buffer.from(sessionCookie.value, 'base64').toString();
-      const [email, timestamp] = decoded.split(':');
+      const [email, role, timestamp] = decoded.split(':');
       const sessionTime = parseInt(timestamp);
       const now = Date.now();
 
@@ -21,8 +23,23 @@ export async function verifyAdminAuth(request: NextRequest): Promise<{ isValid: 
         return { isValid: false, error: 'Session expired' };
       }
 
-      if (email !== process.env.ADMIN_EMAIL) {
+      // Verify admin exists in database
+      const db = await connectToDatabase();
+      const adminsCollection = db.collection<Admin>('admins');
+      const admin = await adminsCollection.findOne({ email });
+
+      if (!admin) {
         return { isValid: false, error: 'Invalid admin' };
+      }
+
+      // Verify role matches
+      if (admin.role !== role) {
+        return { isValid: false, error: 'Invalid session' };
+      }
+
+      // Check permission if required
+      if (requiredPermission && !hasPermission(admin.role, requiredPermission)) {
+        return { isValid: false, error: 'Permission denied' };
       }
 
       return { isValid: true };

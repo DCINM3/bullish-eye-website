@@ -35,6 +35,7 @@ export default function InsurancePolicyPage() {
       icon={Shield}
       iconBgColor="from-indigo-500 to-indigo-700"
       faqItems={faqItems}
+      serviceKey="insurance-policy"
     >
       <ContentSection title="🔐 Insurance Planning">
         <p>Before you grow, you must first protect. Insurance is your safety net against life's financial uncertainties — illness, accidents, loss of life, and more. We help you strike the perfect balance between adequate protection and affordability.</p>

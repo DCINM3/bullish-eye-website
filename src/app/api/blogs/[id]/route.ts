@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { slugify } from '@/lib/utils';
+import { verifyAdminAuth } from '@/lib/auth';
 
-// GET a single blog post by ID
+// Public GET endpoint for a single blog post
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -27,49 +28,84 @@ export async function GET(
   }
 }
 
-// UPDATE a blog post by ID
+// Protected PUT endpoint for updating a blog post
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
+    // Check if admin is authenticated with blog management permission
+    const authResult = await verifyAdminAuth(request, 'blog_management');
+    if (!authResult.isValid) {
+      return NextResponse.json({ message: `Unauthorized - ${authResult.error}` }, { status: 401 });
+    }
+
     const { id } = params;
     const client = await clientPromise;
     const db = client.db();
     const collection = db.collection('blogs');
 
-    const reqBody = await request.json();
-    const { is_featured, heading } = reqBody;
+    const { 
+      banner_image_url, 
+      heading, 
+      subheading, 
+      author, 
+      publish_date, 
+      content,
+      category,
+      is_featured,
+      featured_position
+    } = await request.json();
 
-    // If the post is being featured, un-feature all other posts first.
-    if (is_featured === true) {
+    if (!heading || !author || !publish_date || !content || !category) {
+      return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
+    }
+
+    const slug = slugify(heading);
+    const existing = await collection.findOne({ 
+      slug, 
+      _id: { $ne: new ObjectId(id) } 
+    });
+    
+    if (existing) {
+      return NextResponse.json({ message: 'Blog with this heading already exists' }, { status: 409 });
+    }
+
+    if (is_featured) {
+      // Un-feature all other posts if this one is being featured
       await collection.updateMany(
         { _id: { $ne: new ObjectId(id) } },
-        { $set: { is_featured: false, featured_position: null } }
+        { $set: { is_featured: false } }
       );
     }
 
-    const updateData = { ...reqBody };
-    
-    // if heading is updated, slug should be updated as well
-    if (heading) {
-        updateData.slug = slugify(heading);
-    }
-    updateData.updated_at = new Date();
+    const updateData = {
+      banner_image_url: banner_image_url || '',
+      heading,
+      subheading: subheading || '',
+      author,
+      publish_date: new Date(publish_date),
+      content,
+      category,
+      is_featured: is_featured || false,
+      featured_position: is_featured ? featured_position : null,
+      slug,
+      updated_at: new Date()
+    };
 
-
-    const result = await collection.updateOne(
+    const result = await collection.findOneAndUpdate(
       { _id: new ObjectId(id) },
-      { $set: updateData }
+      { $set: updateData },
+      { returnDocument: 'after' }
     );
 
-    if (result.matchedCount === 0) {
+    if (!result) {
       return NextResponse.json({ message: 'Blog not found' }, { status: 404 });
     }
 
     return NextResponse.json({ 
       message: 'Blog updated successfully',
-      slug: updateData.slug
+      blog: result
     });
 
   } catch (error) {
@@ -78,12 +114,18 @@ export async function PUT(
   }
 }
 
-// DELETE a blog post by ID
+// Protected DELETE endpoint for deleting a blog post
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id:string } }
+  { params }: { params: { id: string } }
 ) {
   try {
+    // Check if admin is authenticated with blog management permission
+    const authResult = await verifyAdminAuth(request, 'blog_management');
+    if (!authResult.isValid) {
+      return NextResponse.json({ message: `Unauthorized - ${authResult.error}` }, { status: 401 });
+    }
+
     const { id } = params;
     const client = await clientPromise;
     const db = client.db();

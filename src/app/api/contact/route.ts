@@ -5,10 +5,26 @@ import { ObjectId } from 'mongodb';
 
 export async function POST(request: NextRequest) {
   try {
-    const { firstName, lastName, email, phone, subject, message } = await request.json();
+    const { 
+      firstName, 
+      lastName, 
+      name,
+      email, 
+      phone, 
+      subject, 
+      message,
+      productId,
+      productTitle,
+      service
+    } = await request.json();
+
+    // Handle both forms - new and existing contact form
+    const finalFirstName = firstName || (name ? name.split(' ')[0] : '');
+    const finalLastName = lastName || (name ? name.split(' ').slice(1).join(' ') : '');
+    const finalSubject = subject || 'General Inquiry';
 
     // Validate required fields
-    if (!firstName || !lastName || !email || !subject || !message) {
+    if (!finalFirstName || !email || !message) {
       return NextResponse.json(
         { success: false, message: 'Please fill in all required fields' },
         { status: 400 }
@@ -29,12 +45,15 @@ export async function POST(request: NextRequest) {
 
     // Create new contact submission
     const newSubmission = {
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
+      firstName: finalFirstName.trim(),
+      lastName: finalLastName.trim(),
       email: email.toLowerCase().trim(),
       phone: phone?.trim() || '',
-      subject: subject.trim(),
+      subject: finalSubject.trim(),
       message: message.trim(),
+      productId: productId || null,
+      productTitle: productTitle || null,
+      service: service || null,
       status: 'not-viewed',
       submittedAt: new Date(),
       updatedAt: new Date()
@@ -59,8 +78,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // Check if admin is authenticated
-    const authResult = await verifyAdminAuth(request);
+    // Check if admin is authenticated with contact management permission
+    const authResult = await verifyAdminAuth(request, 'contact_management');
     if (!authResult.isValid) {
       return NextResponse.json(
         { success: false, message: `Unauthorized - ${authResult.error}` },

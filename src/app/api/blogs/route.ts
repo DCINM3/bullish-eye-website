@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { slugify } from '@/lib/utils';
+import { verifyAdminAuth } from '@/lib/auth';
 
+// Public GET endpoint for blogs
 export async function GET(request: NextRequest) {
   try { 
     const client = await clientPromise;
@@ -30,8 +32,15 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// Protected POST endpoint for creating blogs
 export async function POST(request: NextRequest) {
   try {
+    // Check if admin is authenticated with blog management permission
+    const authResult = await verifyAdminAuth(request, 'blog_management');
+    if (!authResult.isValid) {
+      return NextResponse.json({ message: `Unauthorized - ${authResult.error}` }, { status: 401 });
+    }
+
     const client = await clientPromise;
     const db = client.db();
     const collection = db.collection('blogs');

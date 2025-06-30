@@ -25,6 +25,12 @@ export interface MarketData {
   marketCap?: number;
   high52Week?: number;
   low52Week?: number;
+  error?: string;
+  high?: number;
+  low?: number;
+  open?: number;
+  previousClose?: number;
+  lastUpdated?: string;
 }
 
 export interface AlphaVantageResponse {
@@ -79,4 +85,15 @@ export interface BlogFormData {
   author: string;
   publish_date: string;
   content: string;
+}
+
+export interface Product {
+  _id: string;
+  title: string;
+  description: string;
+  service: string; // service page identifier
+  link?: string; // optional product link
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

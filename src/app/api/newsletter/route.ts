@@ -70,8 +70,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // Check if admin is authenticated
-    const authResult = await verifyAdminAuth(request);
+    // Check if admin is authenticated with newsletter management permission
+    const authResult = await verifyAdminAuth(request, 'newsletter_management');
     if (!authResult.isValid) {
       return NextResponse.json(
         { success: false, message: `Unauthorized - ${authResult.error}` },
@@ -134,8 +134,8 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    // Check if admin is authenticated
-    const authResult = await verifyAdminAuth(request);
+    // Check if admin is authenticated with newsletter management permission
+    const authResult = await verifyAdminAuth(request, 'newsletter_management');
     if (!authResult.isValid) {
       return NextResponse.json(
         { success: false, message: `Unauthorized - ${authResult.error}` },

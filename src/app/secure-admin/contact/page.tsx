@@ -467,7 +467,7 @@ export default function ContactSubmissionsPage() {
                             <Button
                               onClick={() => updateStatus(submission._id!, 'opened')}
                               size="sm"
-                              className="bg-yellow-600 hover:bg-yellow-700"
+                              className="bg-yellow-600 hover:bg-yellow-700 text-white"
                             >
                               Mark Opened
                             </Button>
@@ -476,7 +476,7 @@ export default function ContactSubmissionsPage() {
                             <Button
                               onClick={() => updateStatus(submission._id!, 'responded')}
                               size="sm"
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-green-600 hover:bg-green-700 text-white"
                             >
                               Mark Responded
                             </Button>
@@ -739,7 +739,7 @@ export default function ContactSubmissionsPage() {
                         updateStatus(selectedSubmission._id!, 'opened');
                         setSelectedSubmission({ ...selectedSubmission, status: 'opened' });
                       }}
-                      className="bg-yellow-600 hover:bg-yellow-700"
+                      className="bg-yellow-600 hover:bg-yellow-700 text-white"
                     >
                       Mark as Opened
                     </Button>
@@ -750,14 +750,14 @@ export default function ContactSubmissionsPage() {
                         updateStatus(selectedSubmission._id!, 'responded');
                         setSelectedSubmission({ ...selectedSubmission, status: 'responded' });
                       }}
-                      className="bg-green-600 hover:bg-green-700"
+                      className="bg-green-600 hover:bg-green-700 text-white"
                     >
                       Mark as Responded
                     </Button>
                   )}
                   <Button
                     onClick={() => deleteSubmission(selectedSubmission._id!)}
-                    className="bg-red-600 hover:bg-red-700"
+                    className="bg-red-600 hover:bg-red-700 text-white"
                   >
                     Delete
                   </Button>

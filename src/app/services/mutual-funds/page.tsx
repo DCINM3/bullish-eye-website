@@ -28,13 +28,13 @@ export default function MutualFundsPage() {
     },
   ];
 
-  return (
-    <ServicePageLayout 
+  return (    <ServicePageLayout 
       title="Mutual Fund Services"
       subtitle="Smart Diversification. Reliable Growth."
       icon={PieChart}
       iconBgColor="from-blue-500 to-blue-700"
       faqItems={faqItems}
+      serviceKey="mutual-funds"
     >
       <ContentSection title="🟡 Mutual Fund Services">
         <p>Mutual funds are the cornerstone of long-term wealth creation — offering access to professionally managed, diversified portfolios across equity, debt, and hybrid instruments. At Bullish Eyes, we don't just recommend funds — we architect your portfolio to reflect your aspirations.</p>

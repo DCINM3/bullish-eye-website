@@ -27,13 +27,13 @@ export default function IpoInvestingPage() {
     },
   ];
 
-  return (
-    <ServicePageLayout 
+  return (    <ServicePageLayout 
       title="IPO Investing"
       subtitle="Invest Early. Profit Early."
       icon={TrendingUp}
       iconBgColor="from-red-500 to-red-700"
       faqItems={faqItems}
+      serviceKey="ipo-investing"
     >
       <ContentSection title="🚀 IPO Investing">
         <p>Initial Public Offerings (IPOs) are your first chance to own a piece of a company. While exciting, they require careful analysis to distinguish high-potential gems from overhyped stories. We help you invest in listings that are backed by strong fundamentals and fair valuations.</p>
