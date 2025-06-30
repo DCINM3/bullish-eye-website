@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import MarketTicker from '@/components/market/MarketTicker';
+import ServicesTicker from '@/components/layout/ServicesTicker';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import FloatingContact from '@/components/common/FloatingContact';
 import { Toaster } from 'react-hot-toast';
@@ -24,8 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        
-          <MarketTicker />
+        <ErrorBoundary>
+          <ServicesTicker />
           <Navbar />
           <main className="min-h-screen">
             {children}
@@ -42,7 +42,7 @@ export default function RootLayout({
               },
             }}
           />
-      
+          </ErrorBoundary>
       </body>
     </html>
   );

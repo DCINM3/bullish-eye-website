@@ -25,6 +25,12 @@ export interface MarketData {
   marketCap?: number;
   high52Week?: number;
   low52Week?: number;
+  error?: string;
+  high?: number;
+  low?: number;
+  open?: number;
+  previousClose?: number;
+  lastUpdated?: string;
 }
 
 export interface AlphaVantageResponse {

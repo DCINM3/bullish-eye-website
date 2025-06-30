@@ -1,44 +1,104 @@
 import { NextRequest, NextResponse } from 'next/server';
+import puppeteer from 'puppeteer';
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const symbol = searchParams.get('symbol');
+let browser: any = null;
+let page: any = null;
 
-  if (!symbol) {
-    return NextResponse.json({ error: 'Symbol is required' }, { status: 400 });
-  }
+const INDEX_MAP: Record<string, string> = {
+  'NSEI': 'NIFTY 50',
+  'NSEBANK': 'NIFTY BANK',
+  'CNXIT': 'NIFTY IT',
+  'NSEMDCP': 'NIFTY MIDCAP 100',
+  'CRSLDX': 'NIFTY 500',
+  'NSEAUTO': 'NIFTY AUTO'
+};
+
+async function initBrowser() {
+  if (browser) return; // Already initialized
 
   try {
-    const apiKey = process.env.ALPHA_VANTAGE_API_KEY || 'demo';
-    const response = await fetch(
-      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`,
-      { next: { revalidate: 300 } } // Cache for 5 minutes
-    );
-
-    const data = await response.json();
-
-    if (data['Global Quote']) {
-      const quote = data['Global Quote'];
-      const marketData = {
-        symbol: quote['01. symbol'],
-        name: quote['01. symbol'],
-        price: parseFloat(quote['05. price']),
-        change: parseFloat(quote['09. change']),
-        changePercent: parseFloat(quote['10. change percent'].replace('%', '')),
-        volume: parseInt(quote['06. volume']),
-        high: parseFloat(quote['03. high']),
-        low: parseFloat(quote['04. low']),
-        open: parseFloat(quote['02. open']),
-        previousClose: parseFloat(quote['08. previous close']),
-        lastUpdated: quote['07. latest trading day']
-      };
-
-      return NextResponse.json(marketData);
-    } else {
-      return NextResponse.json({ error: 'No data found for symbol' }, { status: 404 });
-    }
+    console.log('Initializing browser...');
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36');
+    
+    await page.goto('https://www.nseindia.com/market-data/live-equity-market', {
+      waitUntil: 'domcontentloaded',
+      timeout: 60000 
+    });
+    console.log('Browser initialized successfully.');
   } catch (error) {
-    console.error('Error fetching market data:', error);
-    return NextResponse.json({ error: 'Failed to fetch market data' }, { status: 500 });
+    console.error('Failed to initialize browser:', error);
+    if (browser) {
+      await browser.close();
+      browser = null;
+    }
+    throw new Error('Browser initialization failed');
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    await initBrowser();
+    if (!page) {
+      throw new Error("Puppeteer page is not available.");
+    }
+    
+    const apiUrl = `https://www.nseindia.com/api/all-indices`;
+
+    const nseData = await page.evaluate((url: string) => {
+      return fetch(url, {
+        headers: {
+            'Accept': 'application/json, text/javascript, */*; q=0.01',
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+      }).then(res => {
+        if (!res.ok) {
+          return Promise.reject(new Error(`API request failed with status ${res.status}`));
+        }
+        return res.json();
+      });
+    }, apiUrl);
+    
+    const allIndices = nseData.data;
+    const allowedSymbols = Object.keys(INDEX_MAP);
+
+    const filteredIndices = allIndices.filter((index: any) => allowedSymbols.includes(index.indexSymbol));
+
+    const transformedData = filteredIndices.map((index: any) => ({
+        symbol: index.indexSymbol,
+        name: index.index,
+        price: index.last,
+        change: index.variation,
+        changePercent: index.percentChange,
+        previousClose: index.previousClose,
+    }));
+
+    return NextResponse.json(transformedData);
+  } catch (error: any) {
+    console.error(`Error fetching indices data:`, error);
+    
+    if (error.message.includes('Browser initialization failed')) {
+         return NextResponse.json(
+            { error: 'Failed to initialize backend browser for data scraping.' },
+            { status: 503 }
+         );
+    }
+
+    return NextResponse.json(
+      { error: `Failed to fetch market data. Reason: ${error.message}` },
+      { status: 500 }
+    );
+  }
+}
+
+process.on('SIGTERM', async () => {
+  if (browser) {
+    console.log('Closing browser on SIGTERM...');
+    await browser.close();
+    browser = null;
+  }
+});

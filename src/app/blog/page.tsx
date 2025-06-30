@@ -44,7 +44,7 @@ const categories = [
   'All',
   'Education',
   'IPO',
-  'Portfolio',
+  'News',
   'Tax Planning',
   'Investment',
   'Risk Management',
