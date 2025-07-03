@@ -114,8 +114,7 @@ export default function ContactPage() {
     'Unlisted shares',
     'Retirement Plan',
     'Life Insurance',
-    'Structure Product - 1. Diversified Investment Opportunities',
-    'Structure Product - 2.  End-to-End Financial Planning',
+    'Structure Product',
     'Technical Support',
     'Partnership Opportunity',
     'Other'

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "create-admin": "node -r dotenv/config scripts/create-super-admin.js"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.9.1",

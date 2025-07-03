@@ -80,7 +80,7 @@ export default function HeroSection() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                <Link href="/contact">Start Investing Now</Link>
+                <Link href="/contact">Book Consultation</Link>
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               
