@@ -8,7 +8,9 @@ import {
   Youtube,
   Twitter,
   Linkedin,
-  X
+  X,
+  Instagram,
+  Facebook
 } from 'lucide-react';
 import WhatsAppIcon from '../icons/WhatsAppIcon';
 import XIcon from '../icons/XIcon';
@@ -34,8 +36,10 @@ export default function Footer() {
 
   const socialLinks = [
     { name: 'YouTube', icon: Youtube, href: 'https://youtube.com/@deepakchoudhary9620?si=1w6GTCGoMjnDcyoO', color: 'hover:text-red-400' },
-    { name: 'X', icon: XIcon, href: 'https://x.com/deepakinm1?t=1tIdyBKDnO4WJHlTtiZu9Q&s=08', color: 'hover:text-blue-400' },
-    { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/deepak-choudhary-063a812ab?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app', color: 'hover:text-blue-500' },
+    { name: 'X', icon: XIcon, href: 'https://x.com/Bullish_Eyes', color: 'hover:text-blue-400' },
+    { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/bullish-eyes/?viewAsMember=true', color: 'hover:text-blue-500' },
+    { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/bullish_eyes/', color: 'hover:text-pink-500' },
+    { name: 'Facebook', icon: Facebook, href: 'https://www.facebook.com/bullisheyes.in/', color: 'hover:text-blue-600' },
     { name: 'WhatsApp', icon: WhatsAppIcon, href: 'https://whatsapp.com/channel/0029VavVqqiDzgTEsxg5ta2s', color: 'hover:text-green-500' },
   ];
 

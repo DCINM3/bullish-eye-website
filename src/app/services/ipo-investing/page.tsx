@@ -31,7 +31,7 @@ export default function IpoInvestingPage() {
       title="IPO Investing"
       subtitle="Invest Early. Profit Early."
       icon={TrendingUp}
-      iconBgColor="from-red-500 to-red-700"
+      iconBgColor="from-blue-500 to-violet-700"
       faqItems={faqItems}
       serviceKey="ipo-investing"
     >
