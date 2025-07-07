@@ -32,16 +32,79 @@ export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState({
+    email: '',
+    phone: ''
+  });
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phone);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    
+    // Clear previous errors for the field being updated
+    setErrors(prev => ({
+      ...prev,
+      [name]: ''
+    }));
+
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+
+    // Real-time validation
+    if (name === 'email' && value) {
+      if (!validateEmail(value)) {
+        setErrors(prev => ({
+          ...prev,
+          email: 'Please enter a valid email address'
+        }));
+      }
+    }
+
+    if (name === 'phone' && value) {
+      if (!validatePhone(value)) {
+        setErrors(prev => ({
+          ...prev,
+          phone: 'Phone number must be exactly 10 digits'
+        }));
+      }
+    }
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate form before submission
+    const newErrors = {
+      email: '',
+      phone: ''
+    };
+
+    if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (formData.phone && !validatePhone(formData.phone)) {
+      newErrors.phone = 'Phone number must be exactly 10 digits';
+    }
+
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    if (newErrors.email || newErrors.phone) {
+      toast.error('Please fix the validation errors before submitting');
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -64,6 +127,10 @@ export default function ContactPage() {
           phone: '',
           subject: '',
           message: ''
+        });
+        setErrors({
+          email: '',
+          phone: ''
         });
         toast.success(data.message || 'Message sent successfully!');
       } else {
@@ -259,13 +326,18 @@ export default function ContactPage() {
                         required
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                          errors.email ? 'border-red-500' : 'border-gray-300'
+                        }`}
                         placeholder="your.email@example.com"
                       />
+                      {errors.email && (
+                        <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="phone" className="text-sm font-medium text-gray-700">
-                        Phone Number
+                        Phone Number (10 digits)
                       </label>
                       <Input
                         id="phone"
@@ -273,9 +345,15 @@ export default function ContactPage() {
                         type="tel"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="+91 98765 43210"
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                          errors.phone ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        placeholder="9876543210"
+                        maxLength={10}
                       />
+                      {errors.phone && (
+                        <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                      )}
                     </div>
                   </div>
 
