@@ -93,7 +93,7 @@ export default function HeroSection() {
           {/* Right Content - Market Dashboard */}
           <div className="relative">
             <div className="bg-white rounded-3xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-500">
-              <img src="/banner.jpg" alt="Investment Growth Graph" className="w-auto h-full object-cover rounded-lg mb-4" />
+              <img src="https://i.postimg.cc/Y9Y4nFpG/banner.webp" alt="Investment Growth Graph" className="w-auto h-full object-cover rounded-lg mb-4" />
               
             </div>
           </div>
