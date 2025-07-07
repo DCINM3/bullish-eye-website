@@ -1,7 +1,5 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { Footer } from '@/components/layout/Footer';
-import { Navbar } from '@/components/layout/Navbar';
 import BlogSection from '@/components/sections/BlogSection';
 import FaqSection from '@/components/sections/FaqSection';
 import HeroSection from '@/components/sections/HeroSection';
