@@ -211,7 +211,7 @@ export default function BlogPage() {
                 <Card key={post._id} className="group overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-0">
               <div className="relative h-64 overflow-hidden">
                 <Image
-                  src={post.banner_image_url || 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop'}
+                  src={post.banner_image_url}
                   alt={post.heading}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"

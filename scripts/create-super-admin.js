@@ -2,7 +2,7 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://<username>:<password>@cluster0.qgfscb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://BullishAdmin:Bullish%40admin123509@91.108.105.78:27017/BullishEyeWebsite?authSource=admin';
 const DB_NAME = process.env.DB_NAME || 'bullisheyes';
 
 if (!MONGODB_URI) {
@@ -21,14 +21,14 @@ async function createSuperAdmin() {
     const adminsCollection = db.collection('admins');
 
     // Check if super admin already exists
-    const existingAdmin = await adminsCollection.findOne({ email: '<username>@gmail.com' });
+    const existingAdmin = await adminsCollection.findOne({ email: 'kumarashish98526@gmail.com' });
     if (existingAdmin) {
       console.log('Super admin already exists');
       return;
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash('<password>', 10);
+    const hashedPassword = await bcrypt.hash('Ashish@1234590', 10);
 
     // Create super admin
     const superAdmin = {
