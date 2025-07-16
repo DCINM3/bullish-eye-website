@@ -13,6 +13,7 @@ import {
   ChevronUp,
   Package,
   Users,
+  MessageSquare,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
@@ -104,6 +105,13 @@ export default function AdminSidebar() {
                   icon={<Plus className="w-4 h-4" />}
                   active={pathname === '/secure-admin/blogs/create'}
                   label="Add Blog"
+                  small
+                />
+                <SidebarLink
+                  href="/secure-admin/blogs/comments"
+                  icon={<MessageSquare className="w-4 h-4" />}
+                  active={pathname === '/secure-admin/blogs/comments'}
+                  label="Manage Comments"
                   small
                 />
               </div>

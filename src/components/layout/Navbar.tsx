@@ -12,7 +12,8 @@ import {
   Home,
   Info,
   Phone,
-  ChevronDown
+  ChevronDown,
+  Calculator
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -26,6 +27,8 @@ export default function Navbar() {
   ];
   const navigation2 = [
     { name: 'Blog', href: '/blog', icon: BookOpen },
+    { name: 'News', href: '/news', icon: TrendingUp },
+    { name: 'Tools', href: '/tools', icon: Calculator },
     { name: 'Contact Us', href: '/contact', icon: Phone },
   ];
 
