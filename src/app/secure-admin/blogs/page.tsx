@@ -28,6 +28,9 @@ interface Blog {
   slug: string;
   created_at: string;
   updated_at: string;
+  is_featured?: boolean;
+  featured_position?: number;
+  category?: string;
 }
 
 export default function AdminBlogsPage() {
@@ -245,6 +248,7 @@ export default function AdminBlogsPage() {
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subheading</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Author</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Featured</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Published</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
@@ -268,6 +272,17 @@ export default function AdminBlogsPage() {
                 <td className="px-4 py-3 flex items-center gap-2 text-gray-700">
                   <User className="w-4 h-4" />
                   {blog.author}
+                </td>
+                <td className="px-4 py-3">
+                  {blog.is_featured ? (
+                    <Badge variant="default" className="bg-green-100 text-green-800 text-xs">
+                      Featured {blog.featured_position ? `#${blog.featured_position}` : ''}
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary" className="text-xs opacity-50">
+                      Not Featured
+                    </Badge>
+                  )}
                 </td>
                 <td className="px-4 py-3">
                   <Badge variant="secondary" className="text-xs">

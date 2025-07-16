@@ -326,8 +326,26 @@ export default function AdminBlogEdit() {
                       <option value={2}>Position 2 (Right/Bottom)</option>
                     </select>
                     <p className="text-xs text-gray-600 mt-1">
-                      Choose position 1 or 2. Previous article in selected position will be replaced.
+                      Choose position 1 or 2. Only the previous article in the same position will be replaced.
                     </p>
+                    <div className="mt-2 p-3 bg-blue-50 rounded-md text-sm border border-blue-100">
+                      <p className="font-medium text-blue-800 mb-2">How Featured Articles Work:</p>
+                      <ul className="list-disc pl-4 space-y-2 text-gray-700">
+                        <li>Position 1 appears as the left/primary featured article</li>
+                        <li>Position 2 appears as the right/secondary featured article</li>
+                        <li><strong>You can have two featured articles simultaneously</strong> (one in each position)</li>
+                        <li>When you set an article as featured in position 1, it will only replace the previous position 1 article</li>
+                        <li>When you set an article as featured in position 2, it will only replace the previous position 2 article</li>
+                      </ul>
+                      <div className="mt-3 p-2 bg-white rounded border border-blue-100">
+                        <p className="text-blue-800 font-medium mb-1">Example:</p>
+                        <p className="text-gray-600">If "Blog A" is featured in position 1 and "Blog B" is featured in position 2, then:</p>
+                        <ul className="list-disc pl-4 mt-1 text-gray-600">
+                          <li>Setting "Blog C" as featured in position 1 will replace "Blog A" (but "Blog B" stays featured)</li>
+                          <li>Setting "Blog D" as featured in position 2 will replace "Blog B" (but "Blog C" stays featured)</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

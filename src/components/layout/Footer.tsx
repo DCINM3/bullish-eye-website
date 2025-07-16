@@ -35,7 +35,7 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { name: 'YouTube', icon: Youtube, href: 'https://youtube.com/@deepakchoudhary9620?si=1w6GTCGoMjnDcyoO', color: 'hover:text-red-400' },
+    // { name: 'YouTube', icon: Youtube, href: 'https://youtube.com/@deepakchoudhary9620?si=1w6GTCGoMjnDcyoO', color: 'hover:text-red-400' },
     { name: 'X', icon: XIcon, href: 'https://x.com/Bullish_Eyes', color: 'hover:text-blue-400' },
     { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/bullish-eyes/?viewAsMember=true', color: 'hover:text-blue-500' },
     { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/bullish_eyes/', color: 'hover:text-pink-500' },

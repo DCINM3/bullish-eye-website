@@ -72,9 +72,12 @@ export async function PUT(
     }
 
     if (is_featured) {
-      // Un-feature all other posts if this one is being featured
+      // Only un-feature posts with the same position
       await collection.updateMany(
-        { _id: { $ne: new ObjectId(id) } },
+        { 
+          _id: { $ne: new ObjectId(id) },
+          featured_position: featured_position 
+        },
         { $set: { is_featured: false } }
       );
     }

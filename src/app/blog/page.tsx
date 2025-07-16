@@ -72,9 +72,14 @@ export default function BlogPage() {
       const response = await fetch('/api/blogs');
       if (response.ok) {
         const data = await response.json();
-        setBlogPosts(data);
-        // Get featured posts
-        const featured = data.filter((post: BlogPost) => post.is_featured).slice(0, 2);
+        // Filter out News category articles
+        const nonNewsBlogs = data.filter((post: BlogPost) => post.category !== 'News');
+        setBlogPosts(nonNewsBlogs);
+        // Get featured posts and sort by position
+        const featured = nonNewsBlogs
+          .filter((post: BlogPost) => post.is_featured)
+          .sort((a: BlogPost, b: BlogPost) => (a.featured_position || 1) - (b.featured_position || 1))
+          .slice(0, 2);
         setFeaturedPosts(featured);
       }
     } catch (error) {
